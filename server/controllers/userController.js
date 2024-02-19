@@ -1,6 +1,7 @@
 import bcrypt from 'bcrypt'
 import { User } from '../models/userModel.js'
 import jwt from 'jsonwebtoken'
+import { Doctor } from '../models/doctorModel.js'
 
 const signup = async (req, res) => {
     try {
@@ -99,8 +100,41 @@ const getUser = async (req, res) => {
     }
 }
 
+const applyDoctor = async (req, res) => {
+    try {
+        const doctor = new Doctor(req.body);
+        await doctor.save();
+
+        const adminUser = await User.findOne({
+            isAdmin: true
+        })
+
+        const unseenNotifications = adminUser.unseenNotifications
+        unseenNotifications.push({
+            type: "new-doctor-request",
+            message: `A new doctor account has been requested. Kindly login and approve. ${doctor.username}`,
+            data: {
+                doctorId: doctor._id,
+                name: doctor.username
+            },
+            onClickPath: "/admin/doctors"
+        })
+        adminUser.unseenNotifications = unseenNotifications
+        await User.findByIdAndUpdate(adminUser._id, {unseenNotifications})
+
+        return res.status(200).json({
+            success: true,
+            message: "Doctor applied successfully"
+        })
+
+    } catch (error) {
+        console.log(error);
+    }
+}
+
 export {
     signup,
     signin,
-    getUser
+    getUser,
+    applyDoctor
 }
