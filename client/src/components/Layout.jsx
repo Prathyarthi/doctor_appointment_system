@@ -1,9 +1,9 @@
-import React from 'react';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 function Layout({ children }) {
     const { user } = useSelector(state => state.user)
+    // console.log(user);
     return (
         <div className="flex h-screen overflow-hidden">
             {/* Sidebar */}
@@ -67,7 +67,7 @@ function Layout({ children }) {
                     {/* Username */}
                     <div>
                         {/* Replace with username */}
-                        {user.username}
+                        {user?.username}
                     </div>
                 </header>
 

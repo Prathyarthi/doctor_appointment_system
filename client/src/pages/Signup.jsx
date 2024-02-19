@@ -4,6 +4,7 @@ import { toast } from 'react-hot-toast'
 import axios from 'axios'
 import { useDispatch } from 'react-redux';
 import { hideLoading, showLoading } from '../redux/alertsSlice';
+import axiosInstance from '../axiosInstance';
 
 function Signup() {
 
@@ -16,7 +17,7 @@ function Signup() {
     const handleOnClick = async () => {
         try {
             dispatch(showLoading())
-            const response = await axios.post('http://localhost:8000/api/v1/user/signup', {
+            const response = await axiosInstance.post('user/signup', {
                 username,
                 email,
                 password

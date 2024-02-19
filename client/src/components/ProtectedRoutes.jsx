@@ -1,4 +1,5 @@
 import axios from 'axios'
+import axiosInstance from "../axiosInstance"
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Navigate, useNavigate } from 'react-router-dom'
@@ -11,13 +12,14 @@ function ProtectedRoutes(props) {
 
     const getUser = async () => {
         try {
-            const response = await axios.post('http://localhost:8000/api/v1/user/getUser', {
+            const response = await axiosInstance.post('/user/getUser', {
                 token: localStorage.getItem('token')
             }, {
                 headers: {
                     "Authorization": `Bearer ${localStorage.getItem("token")}`
                 }
             })
+            // console.log(response.data.user);
 
             if (response.data.success) {
                 dispatch(setUser(response.data.user))

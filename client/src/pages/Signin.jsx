@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import axiosInstance from "../axiosInstance";
 import toast from 'react-hot-toast';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios'
@@ -17,7 +18,7 @@ function Signin() {
     const handleOnClick = async () => {
         try {
             dispatch(showLoading())
-            const response = await axios.post('http://localhost:8000/api/v1/user/signin', {
+            const response = await axiosInstance.post('/user/signin', {
                 email,
                 password
             });
