@@ -12,12 +12,21 @@ const PORT = process.env.PORT
 app.use(express.json())
 app.use(urlencoded({ extended: true }))
 
-app.use(cors())
+app.use(cors({
+    origin: "http://localhost:5174",
+    credentials: true
+}))
 
-connectToDB()
+app.get("/", (req, res) => {
+    res.json({
+        success: true,
+        message: "Server running"
+    })
+})
 
 app.use('/api/v1/user', userRoutes)
 
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
+    connectToDB()
 })
